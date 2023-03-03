@@ -25,6 +25,7 @@ public class Controller : MonoBehaviour
 
 
     private Animator animator;
+    private Camera cam;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +42,8 @@ public class Controller : MonoBehaviour
 
         Collider collider = GetComponent<Collider>();
         collider.material = material;
+
+        cam = Camera.main;
     }
 
     // Update is called once per frame
@@ -49,8 +52,14 @@ public class Controller : MonoBehaviour
 
         Vector2 playerInput;
 
-        playerInput.x = Input.GetAxis("Horizontal");
-        playerInput.y = Input.GetAxis("Vertical");
+        playerInput.x =  Input.GetAxis("Horizontal");
+        playerInput.y =  Input.GetAxis("Vertical");
+
+        Vector3 cameraForward = cam.transform.forward;
+        Vector3 cameraRight = cam.transform.right;
+
+        //playerInput.x *= cameraRight;
+        //playerInput.y *= cameraForward;
 
         Vector3 playerInputDirection = new Vector3(playerInput.x, 0f, playerInput.y);
 
@@ -68,6 +77,8 @@ public class Controller : MonoBehaviour
 
 
         Vector3 velocity = new Vector3(playerInput.x, 0f, playerInput.y);
+       // Vector3 velocity = (cameraForward * playerInput.y + cameraRight * playerInput.x);
+
         float mag = velocity.magnitude;
         velocity.Normalize();
         velocity *= speed * Mathf.Clamp01(mag);
