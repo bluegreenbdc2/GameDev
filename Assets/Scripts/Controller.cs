@@ -41,9 +41,10 @@ public class Controller : MonoBehaviour
         material.bounceCombine = PhysicMaterialCombine.Minimum;
 
         Collider collider = GetComponent<Collider>();
-        collider.material = material;
+        //collider.material = material;
 
         cam = Camera.main;
+        //rigidBody.mass = 0;
     }
 
     // Update is called once per frame
@@ -85,8 +86,11 @@ public class Controller : MonoBehaviour
 
         Vector3 displacement = velocity * Time.deltaTime;
 
+        //displacement = transform.TransformDirection(displacement);
         rigidBody.MovePosition(transform.localPosition + displacement);
         rigidBody.AddForce(Vector3.down * gravityScale);
+      
+
     }
 
     void Update()
