@@ -66,12 +66,12 @@ public class Spider : MonoBehaviour
 
         if (playerInputDirection == Vector3.zero) //if player isn't moving
         {
-            animator.SetBool("IsMoving", false);
+            //animator.SetBool("IsMoving", false);
         }
         else
         {
             print("ok");
-            animator.SetBool("IsMoving", true);
+            //animator.SetBool("IsMoving", true);
 
             //Quaternion toRotate = Quaternion.LookRotation(playerInputDirection, Vector3.up);
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, rotationSpeed * Time.deltaTime);
@@ -95,15 +95,17 @@ public class Spider : MonoBehaviour
 
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 100f))
         {
-            print("ok");
+            //print("ok");
             Vector3 normal = hit.normal;
             Vector3 gravityDirection = -normal;
             rigidBody.AddForce(gravityDirection * Physics.gravity.magnitude, ForceMode.Acceleration);
+            
             Debug.DrawLine(transform.position, hit.point, Color.green, 0.5f);
-            Debug.Log("transformposition: " + transform.position);
-            Debug.Log("Hit point: " + hit.point);
-            Debug.Log("Normal: " + normal);
+            //Debug.Log("transformposition: " + transform.position);
+           // Debug.Log("Hit point: " + hit.point);
+            //Debug.Log("Normal: " + normal);
             Debug.DrawLine(transform.position, transform.position + hit.normal * 2f, Color.red);
+            
             Quaternion targetRotation = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 10f);
 
@@ -111,6 +113,7 @@ public class Spider : MonoBehaviour
         else
         {
             Debug.Log("Raycast didn't hit anything!");
+            rigidBody.AddForce(Vector3.down * Physics.gravity.magnitude, ForceMode.Acceleration);
         }
 
 
@@ -123,7 +126,9 @@ public class Spider : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             print("jumped");
+            //change to orientation
             rigidBody.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
+            //Debug.DrawRay(Vector3.up * jumpSpeed, green)
         }
     }
 }
