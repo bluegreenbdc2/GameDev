@@ -121,7 +121,7 @@ public class Spider : MonoBehaviour
 
         Vector3 normal = -gravityDirection;
 
-        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 100f))
+        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 1.5f))
         {
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             
