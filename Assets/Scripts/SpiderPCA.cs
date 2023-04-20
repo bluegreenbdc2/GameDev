@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class SpiderPCA : MonoBehaviour
 {
-    public Transform[] targets;
+    public Transform[] legs;
     private int noLegs;
     private Vector3[] localTargetPos;
-    private Vector3[] targetPos;
+    private Vector3[] legsPos;
     // Start is called before the first frame update
     void Start()
     {
     
-        noLegs = targets.Length;
+        noLegs = legs.Length;
         localTargetPos = new Vector3[noLegs]; 
-        targetPos = new Vector3[noLegs]; 
+        legsPos = new Vector3[noLegs]; 
         for (int i = 0; i < noLegs; i++)
         {
             
             print(i);
             
-            localTargetPos[i] = targets[i].localPosition;
-            targetPos[i] = targets[i].position;
+            localTargetPos[i] = legs[i].localPosition;
+            legsPos[i] = legs[i].position;
             //legMoving[i] = false;
-            print(targetPos[i]);
+            print(legsPos[i]);
         }
     }
 
@@ -39,11 +39,33 @@ public class SpiderPCA : MonoBehaviour
         //print(targetPos[0].x);
         //print(targetPos[0].y);
         //print(targetPos[0].z);
+        
+        
+        //stick targets to ground
+        
         for (int i = 0; i < noLegs; i++)
         {
             //localTargetPos[i] = targets[i].localPosition;
-            targets[i].position = targetPos[i];
+            legs[i].position = legsPos[i];
             //legMoving[i] = false;
+            
+            //Gizmos.color = new Color(1, 0, 0, 0.5f);
+            //Gizmos.DrawCube(transform.TransformPoint(localTargetPos[i]), new Vector3(0.2f, 0.2f, 0.2f));
+            
+        }
+    }
+    
+    private void OnDrawGizmosSelected()
+    {
+        for (int i = 0; i < noLegs; i++)
+        {
+            //localTargetPos[i] = targets[i].localPosition;
+            
+            //legMoving[i] = false;
+            
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.DrawCube(transform.TransformPoint(localTargetPos[i]), new Vector3(0.2f, 0.2f, 0.2f));
+            
         }
     }
 }
