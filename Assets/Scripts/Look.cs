@@ -5,10 +5,12 @@ using UnityEngine;
 public class Look : MonoBehaviour
 {
     private Camera cam;
+    public int turnSpeed;
     
     // Start is called before the first frame update
     void Start()
     {
+        turnSpeed = 200;
         cam = Camera.main;
     }
 
@@ -47,7 +49,7 @@ public class Look : MonoBehaviour
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, 999 * Time.fixedDeltaTime);
             Quaternion rotationY = Quaternion.Euler(0, toRotate.eulerAngles.y, 0);
             //transform.rotation = rotationY;
-            transform.localRotation = rotationY;
+            transform.localRotation = Quaternion.RotateTowards(transform.localRotation, rotationY, turnSpeed * Time.fixedDeltaTime);
         }
         
        

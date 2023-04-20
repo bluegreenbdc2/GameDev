@@ -6,14 +6,18 @@ public class SpiderPCA : MonoBehaviour
 {
     public Transform[] legs;
     public float maxDistanceFromTarget;
+    public float maxTargetSurfaceOffset;
     private int noLegs;
+    private Vector3[] defaultLocalPos;
     private Vector3[] localTargetPos;
     private Vector3[] legsPos;
     // Start is called before the first frame update
     void Start()
     {
         maxDistanceFromTarget = 1f;
+        maxTargetSurfaceOffset = 1f;
         noLegs = legs.Length;
+        defaultLocalPos = new Vector3[noLegs];
         localTargetPos = new Vector3[noLegs]; 
         legsPos = new Vector3[noLegs]; 
         for (int i = 0; i < noLegs; i++)
@@ -21,6 +25,7 @@ public class SpiderPCA : MonoBehaviour
             
             print(i);
             
+            defaultLocalPos[i] = legs[i].localPosition;
             localTargetPos[i] = legs[i].localPosition;
             legsPos[i] = legs[i].position;
             //legMoving[i] = false;
@@ -45,7 +50,7 @@ public class SpiderPCA : MonoBehaviour
         
         //stick targets to ground
         
-        for (int i = 0; i < noLegs; i++)
+        for (int i = noLegs - 1; i > -1; i--)
         {
             //localTargetPos[i] = targets[i].localPosition;
             legs[i].position = legsPos[i];
@@ -56,16 +61,20 @@ public class SpiderPCA : MonoBehaviour
             
             //raycast down from Max leg step height?
             if (surfaceNormal == Vector3.zero) surfaceNormal = -transform.up;
-            if (Physics.Raycast( transform.TransformPoint(localTargetPos[i]) + transform.up , -transform.up, out RaycastHit hit, 2f))
+            if (Physics.Raycast( transform.TransformPoint(localTargetPos[i]) + transform.up , -transform.up, out RaycastHit hit, 10f))
             {
                 Debug.DrawRay(transform.TransformPoint(localTargetPos[i]) + transform.up, -transform.up, Color.green);
                 surfaceNormal = hit.normal;
                 Vector3 hitPoint = hit.point;
                 Vector3 newPos = transform.InverseTransformPoint(hitPoint);
-                //if ((newPos - localTargetPos[i]).magnitude > 0.3f)
-                //{
+                
+                //stop target getting too far away due to raycast
+                if ((defaultLocalPos[i] - newPos).magnitude < maxTargetSurfaceOffset)
+                {
+                
                     localTargetPos[i] = transform.InverseTransformPoint(hitPoint);
                //}
+                }
                 
                 
             }
@@ -73,8 +82,32 @@ public class SpiderPCA : MonoBehaviour
             //get distance between current leg pos and target point
             if ( (legs[i].position - transform.TransformPoint(localTargetPos[i])).magnitude > maxDistanceFromTarget)
             {
-                legs[i].position = transform.TransformPoint(localTargetPos[i]);
-                legsPos[i] = legs[i].position;
+                
+                //spiders altenate 2 pairs of legs
+                if (i == 0 || i == 3 || i == 4 || i == 7)
+                {
+                    legs[0].position = transform.TransformPoint(localTargetPos[0]);
+                    legsPos[0] = legs[0].position;
+                    legs[3].position = transform.TransformPoint(localTargetPos[3]);
+                    legsPos[3] = legs[3].position;
+                    legs[4].position = transform.TransformPoint(localTargetPos[4]);
+                    legsPos[4] = legs[4].position;
+                    legs[7].position = transform.TransformPoint(localTargetPos[7]);
+                    legsPos[7] = legs[7].position;
+                }
+                else
+                {
+                    legs[1].position = transform.TransformPoint(localTargetPos[1]);
+                    legsPos[1] = legs[1].position;
+                    legs[2].position = transform.TransformPoint(localTargetPos[2]);
+                    legsPos[2] = legs[2].position;
+                    legs[5].position = transform.TransformPoint(localTargetPos[5]);
+                    legsPos[5] = legs[5].position;
+                    legs[6].position = transform.TransformPoint(localTargetPos[6]);
+                    legsPos[6] = legs[6].position;
+                    
+                }
+                
             }
             
         }
