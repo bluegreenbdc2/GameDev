@@ -52,10 +52,19 @@ public class SpiderPCA : MonoBehaviour
             //Gizmos.color = new Color(1, 0, 0, 0.5f);
             //Gizmos.DrawCube(transform.TransformPoint(localTargetPos[i]), new Vector3(0.2f, 0.2f, 0.2f));
             
+            //raycast down from Max leg step height?
+            if (Physics.Raycast( transform.TransformPoint(localTargetPos[i] + transform.up ) , -transform.up, out RaycastHit hit, 1f))
+            {
+                Debug.DrawRay(transform.TransformPoint(localTargetPos[i] + transform.up), -transform.up, Color.green);
+                Vector3 normal = hit.normal;
+                Vector3 hitPoint = hit.point;
+                localTargetPos[i] = transform.InverseTransformPoint(hitPoint);
+                
+            }
         }
     }
     
-    private void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
         for (int i = 0; i < noLegs; i++)
         {
