@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpiderPCA : MonoBehaviour
 {
-    public float legStepHeight = 0.1f;
+    public bool bodyStuff;
+    public float legStepHeight = 0.2f;
     public float stepSpeed = 8f;
     public Transform[] legs;
     public float maxDistanceFromTarget;
@@ -13,11 +14,16 @@ public class SpiderPCA : MonoBehaviour
     private Vector3[] defaultLocalPos;
     private Vector3[] localTargetPos;
     private Vector3[] legsPos;
+    public Transform[] legsStartPos;
     
     private bool[] moving;
+    
+    
+    private Vector3 lastBodyUp;
     // Start is called before the first frame update
     void Start()
     {
+        lastBodyUp = transform.up;
         maxDistanceFromTarget = 1f;
         maxTargetSurfaceOffset = 1f;
         noLegs = legs.Length;
@@ -32,6 +38,8 @@ public class SpiderPCA : MonoBehaviour
             
             defaultLocalPos[i] = legs[i].localPosition;
             localTargetPos[i] = legs[i].localPosition;
+            
+            legs[i].position = legsStartPos[i].position;
             legsPos[i] = legs[i].position;
             //legMoving[i] = false;
             print(legsPos[i]);
@@ -89,40 +97,50 @@ public class SpiderPCA : MonoBehaviour
             {
                 
                 //spiders altenate 2 pairs of legs
-                if (i == 0 || i == 3 || i == 4 || i == 7)
+                if (!moving[i])
                 {
-                    //legs[0].position = transform.TransformPoint(localTargetPos[0]);
-                    
-                    StartCoroutine(moveLeg(0, transform.TransformPoint(localTargetPos[0]), stepSpeed, legStepHeight));
-                    
-                    
-                    StartCoroutine(moveLeg(3, transform.TransformPoint(localTargetPos[3]), stepSpeed, legStepHeight));
-                   // legsPos[3] = legs[3].position;
-                    
-                    StartCoroutine(moveLeg(4, transform.TransformPoint(localTargetPos[4]), stepSpeed, legStepHeight));
-                   // legsPos[4] = legs[4].position;
-                    
-                    StartCoroutine(moveLeg(7, transform.TransformPoint(localTargetPos[7]), stepSpeed, legStepHeight));
-                   // legsPos[7] = legs[7].position;
-                }
-                else
-                {
-                    StartCoroutine(moveLeg(1, transform.TransformPoint(localTargetPos[1]), stepSpeed, legStepHeight));
-                  //  legsPos[1] = legs[1].position;
-                    
-                    StartCoroutine(moveLeg(2, transform.TransformPoint(localTargetPos[2]), stepSpeed, legStepHeight));
-                  //  legsPos[2] = legs[2].position;
-                    
-                    StartCoroutine(moveLeg(5, transform.TransformPoint(localTargetPos[5]), stepSpeed, legStepHeight));
-                   // legsPos[5] = legs[5].position;
-                    
-                    StartCoroutine(moveLeg(6, transform.TransformPoint(localTargetPos[6]), stepSpeed, legStepHeight));
-                  //  legsPos[6] = legs[6].position;
+                    StartCoroutine(moveLeg(i, transform.TransformPoint(localTargetPos[i]), stepSpeed, legStepHeight));
+                    /*
+                    if (i == 0 || i == 3 || i == 4 || i == 7)
+                    {
+                        //legs[0].position = transform.TransformPoint(localTargetPos[0]);
+
+                        StartCoroutine(moveLeg(0, transform.TransformPoint(localTargetPos[0]), stepSpeed, legStepHeight));
+
+
+                        StartCoroutine(moveLeg(3, transform.TransformPoint(localTargetPos[3]), stepSpeed, legStepHeight));
+                       // legsPos[3] = legs[3].position;
+
+                        StartCoroutine(moveLeg(4, transform.TransformPoint(localTargetPos[4]), stepSpeed, legStepHeight));
+                       // legsPos[4] = legs[4].position;
+
+                        StartCoroutine(moveLeg(7, transform.TransformPoint(localTargetPos[7]), stepSpeed, legStepHeight));
+                       // legsPos[7] = legs[7].position;
+                    }
+                    else
+                    {
+                        StartCoroutine(moveLeg(1, transform.TransformPoint(localTargetPos[1]), stepSpeed, legStepHeight));
+                      //  legsPos[1] = legs[1].position;
+
+                        StartCoroutine(moveLeg(2, transform.TransformPoint(localTargetPos[2]), stepSpeed, legStepHeight));
+                      //  legsPos[2] = legs[2].position;
+
+                        StartCoroutine(moveLeg(5, transform.TransformPoint(localTargetPos[5]), stepSpeed, legStepHeight));
+                       // legsPos[5] = legs[5].position;
+
+                        StartCoroutine(moveLeg(6, transform.TransformPoint(localTargetPos[6]), stepSpeed, legStepHeight));
+                      //  legsPos[6] = legs[6].position;
+
+                    }
+                    */
                     
                 }
                 
             }
             
+            
+
+
         }
     }
     
