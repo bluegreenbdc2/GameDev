@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpiderPCA : MonoBehaviour
 {
+    public float legStepHeight = 0.1f;
+    public float stepSpeed = 8f;
     public Transform[] legs;
     public float maxDistanceFromTarget;
     public float maxTargetSurfaceOffset;
@@ -11,6 +13,8 @@ public class SpiderPCA : MonoBehaviour
     private Vector3[] defaultLocalPos;
     private Vector3[] localTargetPos;
     private Vector3[] legsPos;
+    
+    private bool[] moving;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,9 +24,10 @@ public class SpiderPCA : MonoBehaviour
         defaultLocalPos = new Vector3[noLegs];
         localTargetPos = new Vector3[noLegs]; 
         legsPos = new Vector3[noLegs]; 
+        moving = new bool[noLegs];
         for (int i = 0; i < noLegs; i++)
         {
-            
+            moving[i] = false;
             print(i);
             
             defaultLocalPos[i] = legs[i].localPosition;
@@ -53,7 +58,7 @@ public class SpiderPCA : MonoBehaviour
         for (int i = noLegs - 1; i > -1; i--)
         {
             //localTargetPos[i] = targets[i].localPosition;
-            legs[i].position = legsPos[i];
+            if (!moving[i]) legs[i].position = legsPos[i];
             //legMoving[i] = false;
             
             //Gizmos.color = new Color(1, 0, 0, 0.5f);
@@ -86,31 +91,55 @@ public class SpiderPCA : MonoBehaviour
                 //spiders altenate 2 pairs of legs
                 if (i == 0 || i == 3 || i == 4 || i == 7)
                 {
-                    legs[0].position = transform.TransformPoint(localTargetPos[0]);
-                    legsPos[0] = legs[0].position;
-                    legs[3].position = transform.TransformPoint(localTargetPos[3]);
-                    legsPos[3] = legs[3].position;
-                    legs[4].position = transform.TransformPoint(localTargetPos[4]);
-                    legsPos[4] = legs[4].position;
-                    legs[7].position = transform.TransformPoint(localTargetPos[7]);
-                    legsPos[7] = legs[7].position;
+                    //legs[0].position = transform.TransformPoint(localTargetPos[0]);
+                    
+                    StartCoroutine(moveLeg(0, transform.TransformPoint(localTargetPos[0]), stepSpeed, legStepHeight));
+                    
+                    
+                    StartCoroutine(moveLeg(3, transform.TransformPoint(localTargetPos[3]), stepSpeed, legStepHeight));
+                   // legsPos[3] = legs[3].position;
+                    
+                    StartCoroutine(moveLeg(4, transform.TransformPoint(localTargetPos[4]), stepSpeed, legStepHeight));
+                   // legsPos[4] = legs[4].position;
+                    
+                    StartCoroutine(moveLeg(7, transform.TransformPoint(localTargetPos[7]), stepSpeed, legStepHeight));
+                   // legsPos[7] = legs[7].position;
                 }
                 else
                 {
-                    legs[1].position = transform.TransformPoint(localTargetPos[1]);
-                    legsPos[1] = legs[1].position;
-                    legs[2].position = transform.TransformPoint(localTargetPos[2]);
-                    legsPos[2] = legs[2].position;
-                    legs[5].position = transform.TransformPoint(localTargetPos[5]);
-                    legsPos[5] = legs[5].position;
-                    legs[6].position = transform.TransformPoint(localTargetPos[6]);
-                    legsPos[6] = legs[6].position;
+                    StartCoroutine(moveLeg(1, transform.TransformPoint(localTargetPos[1]), stepSpeed, legStepHeight));
+                  //  legsPos[1] = legs[1].position;
+                    
+                    StartCoroutine(moveLeg(2, transform.TransformPoint(localTargetPos[2]), stepSpeed, legStepHeight));
+                  //  legsPos[2] = legs[2].position;
+                    
+                    StartCoroutine(moveLeg(5, transform.TransformPoint(localTargetPos[5]), stepSpeed, legStepHeight));
+                   // legsPos[5] = legs[5].position;
+                    
+                    StartCoroutine(moveLeg(6, transform.TransformPoint(localTargetPos[6]), stepSpeed, legStepHeight));
+                  //  legsPos[6] = legs[6].position;
                     
                 }
                 
             }
             
         }
+    }
+    
+    IEnumerator moveLeg(int leg, Vector3 newPosition, float speed, float height)
+    {
+        moving[leg] = true;
+        for(int i = 1; i <= speed; i++)
+        {
+            
+            Vector3 legMovement =  Vector3.Lerp(legs[leg].position, newPosition, i / speed);
+            Vector3 legHeight = Mathf.Sin(i / speed * Mathf.PI) * height * transform.up;
+            
+            legs[leg].position = legMovement + legHeight;  
+            yield return new WaitForFixedUpdate();
+        }
+        legsPos[leg] = legs[leg].position;
+        moving[leg] = false;
     }
     
     void OnDrawGizmosSelected()
