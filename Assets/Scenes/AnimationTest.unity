@@ -5538,9 +5538,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e5cff1634d188428da638178a913f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyStuff: 0
-  legStepHeight: 0.2
-  stepSpeed: 8
+  bodyStuff: 1
+  legStepHeight: 0.25
+  stepSpeed: 9
   legs:
   - {fileID: 1786252000}
   - {fileID: 700921012}

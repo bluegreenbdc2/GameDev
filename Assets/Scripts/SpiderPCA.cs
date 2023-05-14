@@ -265,12 +265,19 @@ public class SpiderPCA : MonoBehaviour
 
             Vector3 legs1to8 = legs[7].position - legs[0].position;
             Vector3 legs2to7 = legs[6].position - legs[1].position;
+
+            Vector3 legs3to6 = legs[5].position - legs[2].position;
+            Vector3 legs4to5 = legs[4].position - legs[3].position;
+
+
             Vector3 legCrossProduct = -Vector3.Cross(legs1to8, legs2to7);
-            Debug.DrawRay(transform.position, legCrossProduct, Color.magenta);
+            Vector3 legCrossProduct2 = -Vector3.Cross(legs3to6, legs4to5);
+
+            //Debug.DrawRay(transform.position, legCrossProduct + legCrossProduct2, Color.magenta);
             //transform.up = legCrossProduct;
 
             //retain forward direction
-            Vector3 transformUp = Vector3.Slerp(transform.up, legCrossProduct, 0.5f);//Time.fixedDeltaTime * 5f);
+            Vector3 transformUp = Vector3.Slerp(transform.up, legCrossProduct + legCrossProduct2, 0.5f);//Time.fixedDeltaTime * 5f);
             transform.rotation = Quaternion.LookRotation(transform.forward, transformUp);
            
 
