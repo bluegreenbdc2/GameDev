@@ -82,7 +82,7 @@ public class SpiderPCA : MonoBehaviour
 
             Vector3 aboveSpiderToLegTarget = transform.TransformPoint(defaultLocalPos[i]) - (transform.position + (transform.up * 1.5f));
             Vector3 LegTargetToBelowSpider = (transform.position - (transform.up * 1.5f)) - transform.TransformPoint(defaultLocalPos[i]);
-            Collider selfCollider = transform.parent.GetComponent<Collider>();
+            Collider selfCollider = transform.GetComponent<Collider>();
             selfCollider.enabled = false;
 
             if (Physics.Raycast((transform.position + transform.up), aboveSpiderToLegTarget, out RaycastHit hit, 5f))
@@ -255,6 +255,21 @@ public class SpiderPCA : MonoBehaviour
 
 
         }
+        // 8-1
+        // 7-2
+        // 6-3
+        // 5-4
+        if (bodyStuff)
+        {
+            Vector3 legs1to8 = legs[7].position - legs[0].position;
+            Vector3 legs2to7 = legs[6].position - legs[1].position;
+            Vector3 legCrossProduct = -Vector3.Cross(legs1to8, legs2to7);
+            Debug.DrawRay(transform.position, legCrossProduct, Color.magenta);
+            //transform.up = legCrossProduct;
+            transform.up = Vector3.Slerp(transform.up, legCrossProduct, 0.2f);//Time.fixedDeltaTime * 5f);
+        }
+
+
     }
     
     IEnumerator moveLeg(int leg, Vector3 newPosition, float speed, float height)

@@ -4546,7 +4546,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1679903888}
-  m_LocalRotation: {x: 0.25653526, y: 0.17335236, z: -0.04682595, w: 0.94970834}
+  m_LocalRotation: {x: 0.25653526, y: 0.1733523, z: -0.046825934, w: 0.9497084}
   m_LocalPosition: {x: 2.271751, y: 3.34, z: -8.499507}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4810,7 +4810,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1757058785}
-  m_LocalRotation: {x: 0.2565353, y: 0.17335236, z: -0.046825957, w: 0.94970834}
+  m_LocalRotation: {x: 0.2565353, y: 0.17335233, z: -0.04682595, w: 0.9497084}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5533,12 +5533,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1984952296}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05e5cff1634d188428da638178a913f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyStuff: 0
+  bodyStuff: 1
   legStepHeight: 0.2
   stepSpeed: 8
   legs:
@@ -5550,8 +5550,8 @@ MonoBehaviour:
   - {fileID: 1216952400}
   - {fileID: 1020505636}
   - {fileID: 262738039}
-  maxDistanceFromTarget: 0
-  maxTargetSurfaceOffset: 0
+  maxDistanceFromTarget: 1
+  maxTargetSurfaceOffset: 2.8
   legsStartPos:
   - {fileID: 158590839}
   - {fileID: 269118409}
@@ -8047,10 +8047,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4969057644414197323}
   - component: {fileID: 4969057644404388303}
-  - component: {fileID: 4969057644414197328}
   - component: {fileID: 4969057644414197324}
   - component: {fileID: 4969057644414197326}
   - component: {fileID: 4969057644414197329}
+  - component: {fileID: 4969057644414197330}
   m_Layer: 0
   m_Name: spider
   m_TagString: Untagged
@@ -8803,41 +8803,6 @@ Transform:
   m_Father: {fileID: 4969057644414197361}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4969057644414197328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4969057644413764523}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05e5cff1634d188428da638178a913f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bodyStuff: 0
-  legStepHeight: 0.2
-  stepSpeed: 8
-  legs:
-  - {fileID: 1786252000}
-  - {fileID: 700921012}
-  - {fileID: 1548604686}
-  - {fileID: 88222044}
-  - {fileID: 1968097185}
-  - {fileID: 1216952400}
-  - {fileID: 1020505636}
-  - {fileID: 262738039}
-  maxDistanceFromTarget: 0
-  maxTargetSurfaceOffset: 0
-  legsStartPos:
-  - {fileID: 158590839}
-  - {fileID: 269118409}
-  - {fileID: 1562380934}
-  - {fileID: 1391323553}
-  - {fileID: 785835730}
-  - {fileID: 738999669}
-  - {fileID: 1322787652}
-  - {fileID: 455933287}
 --- !u!114 &4969057644414197329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8851,6 +8816,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 0
+--- !u!114 &4969057644414197330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4969057644413764523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e5cff1634d188428da638178a913f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyStuff: 1
+  legStepHeight: 0.2
+  stepSpeed: 8
+  legs:
+  - {fileID: 1786252000}
+  - {fileID: 700921012}
+  - {fileID: 1548604686}
+  - {fileID: 88222044}
+  - {fileID: 1968097185}
+  - {fileID: 1216952400}
+  - {fileID: 1020505636}
+  - {fileID: 262738039}
+  maxDistanceFromTarget: 1
+  maxTargetSurfaceOffset: 2.8
+  legsStartPos:
+  - {fileID: 158590839}
+  - {fileID: 269118409}
+  - {fileID: 1562380934}
+  - {fileID: 1391323553}
+  - {fileID: 785835730}
+  - {fileID: 738999669}
+  - {fileID: 1322787652}
+  - {fileID: 455933287}
 --- !u!4 &4969057644414197341
 Transform:
   m_ObjectHideFlags: 0

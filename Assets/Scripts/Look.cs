@@ -43,9 +43,9 @@ public class Look : MonoBehaviour
         Debug.DrawRay(transform.position, transform.up, Color.blue);
         Debug.DrawRay(transform.position, velocity, Color.yellow);
         velocity.y = 0;
-        Quaternion toRotate = Quaternion.LookRotation(velocity, transform.up);
-        if (playerInputDirection != Vector3.zero)
+        if (velocity != Vector3.zero && playerInputDirection != Vector3.zero)
         {
+            Quaternion toRotate = Quaternion.LookRotation(velocity, transform.up);
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, 999 * Time.fixedDeltaTime);
             Quaternion rotationY = Quaternion.Euler(0, toRotate.eulerAngles.y, 0);
             //transform.rotation = rotationY;
