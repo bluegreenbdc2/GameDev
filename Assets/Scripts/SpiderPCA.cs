@@ -23,6 +23,7 @@ public class SpiderPCA : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        lastPos = transform.position;
         lastBodyUp = transform.up;
         maxDistanceFromTarget = 1f;
         maxTargetSurfaceOffset = 1f;
@@ -51,10 +52,14 @@ public class SpiderPCA : MonoBehaviour
     {
         
     }
-    
+    Vector3 lastPos;
     Vector3 surfaceNormal;
     void FixedUpdate()
     {
+        Vector3 velocity = transform.forward;
+        //Vector3 velocity = transform.position - lastPos;
+        //lastPos = transform.position;
+        Debug.DrawRay(transform.position, velocity, Color.red);
         //print(noLegs);
         //print(targetPos[0].x);
         //print(targetPos[0].y);
@@ -74,12 +79,36 @@ public class SpiderPCA : MonoBehaviour
             
             //raycast down from Max leg step height?
             if (surfaceNormal == Vector3.zero) surfaceNormal = -transform.up;
-            if (Physics.Raycast( transform.TransformPoint(localTargetPos[i]) + transform.up , -transform.up, out RaycastHit hit, 10f))
+            
+            if (Physics.Raycast( transform.TransformPoint(defaultLocalPos[i]) + transform.up , -transform.up, out RaycastHit hit, 10f))
             {
-                Debug.DrawRay(transform.TransformPoint(localTargetPos[i]) + transform.up, -transform.up, Color.green);
+                Debug.DrawRay(transform.TransformPoint(defaultLocalPos[i]) + transform.up, -transform.up, Color.green);
                 surfaceNormal = hit.normal;
                 Vector3 hitPoint = hit.point;
                 Vector3 newPos = transform.InverseTransformPoint(hitPoint);
+                
+                //raycast in moving direction
+                if (Physics.Raycast(transform.TransformPoint(defaultLocalPos[i]) + transform.up, velocity, out RaycastHit fHit, 1.5f))
+                {
+                    Debug.DrawRay(transform.TransformPoint(defaultLocalPos[i]) + transform.up, velocity, Color.green);
+                    //Debug.DrawRay(transform.position, velocity, Color.green);
+                    surfaceNormal += fHit.normal;
+                    //hitPoint = fHit.point;
+                    if (Physics.Raycast(transform.TransformPoint(defaultLocalPos[i]) + transform.up, -surfaceNormal, out RaycastHit avgHit, 1.5f))
+                    {
+                        Debug.Log("wtf");
+                        hitPoint = avgHit.point;
+                        Debug.DrawRay(transform.TransformPoint(defaultLocalPos[i]) + transform.up, -surfaceNormal, Color.white);
+                        newPos = transform.InverseTransformPoint(hitPoint);
+                    }
+                    
+                }
+                else{
+                    
+                }
+                
+                
+                
                 
                 //stop target getting too far away due to raycast
                 if ((defaultLocalPos[i] - newPos).magnitude < maxTargetSurfaceOffset)
@@ -89,6 +118,30 @@ public class SpiderPCA : MonoBehaviour
                //}
                 }
                 
+                
+            }
+            //on the edge of a plane
+            else{
+                Debug.DrawRay(transform.TransformPoint(localTargetPos[i]) + transform.up, -transform.up, Color.red);
+                Vector3 edgeVec = transform.TransformPoint(localTargetPos[i]) - (transform.up * 0.2f);
+                if (Physics.Raycast(edgeVec, -velocity, out RaycastHit ehit, 3f))
+                {
+                    Debug.DrawRay(edgeVec, -velocity, Color.green);
+                    //Debug.DrawRay(edgeVec, -velocity, Color.green);
+                    //normal = ehit.normal;
+                    Vector3 newPos = transform.InverseTransformPoint(ehit.point);
+                    
+                    //stop target getting too far away due to raycast
+                    if ((defaultLocalPos[i] - newPos).magnitude < maxTargetSurfaceOffset)
+                    {
+
+                        localTargetPos[i] = transform.InverseTransformPoint(ehit.point);
+                   //}
+                    }
+                }
+                else{
+                    Debug.DrawRay(edgeVec, -velocity, Color.red);
+                }
                 
             }
             
@@ -165,13 +218,13 @@ public class SpiderPCA : MonoBehaviour
         for (int i = 0; i < noLegs; i++)
         {
             //localTargetPos[i] = targets[i].localPosition;
-            
+
             //legMoving[i] = false;
-            
+            //Debug.Log("HAAA");
             Gizmos.color = new Color(1, 0, 0, 0.5f);
-            Gizmos.DrawWireSphere(transform.TransformPoint(localTargetPos[i]), maxDistanceFromTarget);
+            //Gizmos.DrawWireSphere(transform.TransformPoint(localTargetPos[i]), maxDistanceFromTarget);
             Gizmos.color = new Color(1, 1, 0, 0.5f);
-            Gizmos.DrawCube(transform.TransformPoint(localTargetPos[i] + transform.up), new Vector3(0.2f, 0.2f, 0.2f));
+            Gizmos.DrawCube(transform.TransformPoint(localTargetPos[i]/* + transform.up*/), new Vector3(0.2f, 0.2f, 0.2f));
 
         }
     }
