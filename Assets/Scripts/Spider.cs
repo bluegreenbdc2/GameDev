@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Spider : MonoBehaviour
 {
+    public GameObject humanPrefab;
 
     public float rotationSpeed;
 
@@ -26,7 +27,10 @@ public class Spider : MonoBehaviour
     public Transform camer;
     private Animator animator;
     private Camera cam;
-    
+
+    Cinemachine.CinemachineFreeLook freeLookCam;
+
+
     private Vector3 getGroundNormal() {
         Vector3 normal = transform.up;
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit1, 1f))
@@ -47,6 +51,11 @@ public class Spider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject camera = GameObject.Find("Camera").gameObject;
+        freeLookCam = camera.GetComponent<Cinemachine.CinemachineFreeLook>();
+        freeLookCam.m_LookAt = transform;
+        freeLookCam.m_Follow = transform;
+
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
 
@@ -62,6 +71,10 @@ public class Spider : MonoBehaviour
         gravityDirection = -transform.up;
         cam = Camera.main;
         //rigidBody.mass = 0;
+        
+        //has to be below camera assignment (dunno why)
+        //GameObject real = GameObject.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject;
+       // real.transform.rotation = transform.rotation;
     }
 
     // Update is called once per frame
@@ -96,6 +109,7 @@ public class Spider : MonoBehaviour
             //Quaternion rotationY = Quaternion.Euler(transform.rotation.eulerAngles.x, toRotate.eulerAngles.y, transform.rotation.eulerAngles.z);
             //transform.rotation = rotationY;
         }
+
         //velocity = Quaternion.LookRotation(velocity, transform.up) * velocity;
         
        // velocity = Vector3.ProjectOnPlane(velocity, transform.up);
@@ -191,5 +205,17 @@ public class Spider : MonoBehaviour
             rigidBody.AddForce(transform.up * jumpSpeed, ForceMode.Impulse);
             //Debug.DrawRay(Vector3.up * jumpSpeed, green)
         }*/
+
+        if (Input.GetButtonDown("Switch") && isGrounded)
+        {
+            print("Switching");
+            Instantiate(humanPrefab, transform.position, GameObject.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject.transform.rotation);
+            
+            Destroy(gameObject);
+
+        }
+
+
+
     }
 }

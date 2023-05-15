@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
+    public GameObject spiderPrefab;
 
     public float rotationSpeed;
 
@@ -27,9 +28,19 @@ public class Controller : MonoBehaviour
     private Animator animator;
     private Camera cam;
 
+    Cinemachine.CinemachineFreeLook freeLookCam;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        GameObject camera = GameObject.Find("Camera").gameObject;
+        freeLookCam = camera.GetComponent<Cinemachine.CinemachineFreeLook>();
+        freeLookCam.m_LookAt = transform;
+        freeLookCam.m_Follow = transform;
+
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
 
@@ -102,5 +113,16 @@ public class Controller : MonoBehaviour
             print("jumped");
             rigidBody.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
         }
+        if (Input.GetButtonDown("Switch") && isGrounded)
+        {
+            print("Switching");
+            Instantiate(spiderPrefab, transform.position, transform.rotation);
+            //GameObject real = transform.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject;
+            //real.transform.rotation = transform.rotation;
+            Destroy(gameObject);
+
+        }
+
+
     }
 }

@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1558005795}
   - component: {fileID: 1558005791}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerHuman
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 109172321315190402}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 770373528298187569}
@@ -131,6 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d2650e0e345ba45ad77acbf1ded806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spiderPrefab: {fileID: 6452732926240901198, guid: 8c29c89e3ab878443b9adef5d5ef318c,
+    type: 3}
   rotationSpeed: 800
   jumpSpeed: 16
   gravityScale: 38
