@@ -136,7 +136,7 @@ MonoBehaviour:
   rotationSpeed: 800
   jumpSpeed: 16
   gravityScale: 38
-  speed: 10
+  speed: 7
   maxAcceleration: 40
 --- !u!1 &278752737343883120
 GameObject:

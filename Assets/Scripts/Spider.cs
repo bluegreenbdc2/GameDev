@@ -73,8 +73,8 @@ public class Spider : MonoBehaviour
         //rigidBody.mass = 0;
         
         //has to be below camera assignment (dunno why)
-        //GameObject real = GameObject.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject;
-       // real.transform.rotation = transform.rotation;
+        GameObject real = GameObject.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject;
+        real.transform.localRotation = transform.rotation;
     }
 
     // Update is called once per frame

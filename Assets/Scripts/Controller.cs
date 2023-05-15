@@ -68,12 +68,17 @@ public class Controller : MonoBehaviour
         playerInput.y =  Input.GetAxis("Vertical");
 
         Vector3 cameraForward = cam.transform.forward;
+        cameraForward.y = 0;
+        cameraForward = cameraForward.normalized;
+
         Vector3 cameraRight = cam.transform.right;
+        cameraRight.y = 0;
+        cameraRight = cameraRight.normalized;
 
         //playerInput.x *= cameraRight;
         //playerInput.y *= cameraForward;
 
-        Vector3 playerInputDirection = new Vector3(playerInput.x, 0f, playerInput.y);
+        Vector3 playerInputDirection = (playerInput.x * cameraRight) + (playerInput.y * cameraForward);
 
         if (playerInputDirection == Vector3.zero) //if player isn't moving
         {
@@ -83,13 +88,13 @@ public class Controller : MonoBehaviour
         {
             animator.SetBool("IsMoving", true);
 
-            Quaternion toRotate = Quaternion.LookRotation(playerInputDirection, Vector3.up);
+            Quaternion toRotate = Quaternion.LookRotation(playerInputDirection, transform.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, rotationSpeed * Time.deltaTime);
         }
 
 
-        Vector3 velocity = new Vector3(playerInput.x, 0f, playerInput.y);
-       // Vector3 velocity = (cameraForward * playerInput.y + cameraRight * playerInput.x);
+        Vector3 velocity = (playerInput.x * cameraRight) + (playerInput.y * cameraForward);
+        // Vector3 velocity = (cameraForward * playerInput.y + cameraRight * playerInput.x);
 
         float mag = velocity.magnitude;
         velocity.Normalize();
@@ -119,6 +124,7 @@ public class Controller : MonoBehaviour
             Instantiate(spiderPrefab, transform.position, transform.rotation);
             //GameObject real = transform.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject;
             //real.transform.rotation = transform.rotation;
+            //GameObject.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject.transform.rotation = transform.rotation;
             Destroy(gameObject);
 
         }
