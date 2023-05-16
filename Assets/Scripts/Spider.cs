@@ -209,7 +209,7 @@ public class Spider : MonoBehaviour
         if (Input.GetButtonDown("Switch") && isGrounded)
         {
             print("Switching");
-            Instantiate(humanPrefab, transform.position, GameObject.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject.transform.rotation);
+            Instantiate(humanPrefab, transform.position, transform.Find("spider/SpiderAnim").gameObject.transform.rotation);
             
             Destroy(gameObject);
 
