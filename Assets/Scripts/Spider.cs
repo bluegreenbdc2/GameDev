@@ -134,8 +134,8 @@ public class Spider : MonoBehaviour
         rigidBody.MovePosition(transform.position + displacement);
 
         Vector3 normal = -gravityDirection;
-
-        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 1.5f))
+        RaycastHit hit = new RaycastHit();
+        if (Physics.Raycast(transform.position, -transform.up, out hit, 1.5f) && hit.transform.tag != "NoClimb")
         {
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             
@@ -151,7 +151,7 @@ public class Spider : MonoBehaviour
             Debug.Log("Down Raycast didn't hit anything!");
             
             Vector3 edgeVec = transform.localPosition - transform.up;
-            if (Physics.Raycast(edgeVec, -velocity, out RaycastHit ehit, 1f))
+            if (Physics.Raycast(edgeVec, -velocity, out RaycastHit ehit, 1f) && ehit.transform.tag != "NoClimb")
             {
                 Debug.DrawRay(edgeVec, -velocity, Color.green);
                 normal = ehit.normal;
@@ -166,7 +166,7 @@ public class Spider : MonoBehaviour
             //-transform.up is down in relation to objects rotation
         }
                     
-        if (Physics.Raycast(transform.position, velocity, out RaycastHit vHit, 1.5f))
+        if (Physics.Raycast(transform.position, velocity, out RaycastHit vHit, 1.5f) && vHit.transform.tag != "NoClimb")
         {
             Debug.DrawRay(transform.position, velocity, Color.green);
             normal += vHit.normal;
