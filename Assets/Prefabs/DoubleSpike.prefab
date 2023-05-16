@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 2867249878006095558}
   m_Layer: 0
   m_Name: spikes (6)
-  m_TagString: Untagged
+  m_TagString: NoClimb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -313,8 +313,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.789083, y: 4.2219186, z: 4.598669}
-  m_Center: {x: -1.3945413, y: 1.6109589, z: -0.15677094}
+  m_Size: {x: 3.789083, y: 3.215372, z: 4.598669}
+  m_Center: {x: -1.3945413, y: 1.1076826, z: -0.15677093}
 --- !u!1 &2867249878029989101
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 2867249878488190642}
   m_Layer: 0
   m_Name: spikes (3)
-  m_TagString: Untagged
+  m_TagString: NoClimb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1139,7 +1139,7 @@ GameObject:
   - component: {fileID: 4846797837002432828}
   m_Layer: 0
   m_Name: DoubleSpike
-  m_TagString: Untagged
+  m_TagString: NoClimb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

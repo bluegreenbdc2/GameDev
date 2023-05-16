@@ -66,7 +66,8 @@ public class Spider : MonoBehaviour
         material.frictionCombine = PhysicMaterialCombine.Minimum;
         material.bounceCombine = PhysicMaterialCombine.Minimum;
 
-        Collider collider = this.gameObject.transform.GetChild(0).GetComponent<Collider>();
+        //Collider collider = this.gameObject.transform.GetChild(0).GetComponent<Collider>();
+        Collider collider = this.gameObject.transform.GetComponent<Collider>();
         //collider.material = material;
         gravityDirection = -transform.up;
         cam = Camera.main;
@@ -102,9 +103,10 @@ public class Spider : MonoBehaviour
         
         Vector3 velocity = (cameraForward * playerInput.y + cameraRight * playerInput.x);
         
-        Quaternion toRotate = Quaternion.LookRotation(velocity, transform.up);
+        
         if (playerInputDirection != Vector3.zero)
         {
+            Quaternion toRotate = Quaternion.LookRotation(velocity, transform.up);
             //transform.rotation = toRotate;//Quaternion.RotateTowards(transform.rotation, toRotate, rotationSpeed * Time.fixedDeltaTime);
             //Quaternion rotationY = Quaternion.Euler(transform.rotation.eulerAngles.x, toRotate.eulerAngles.y, transform.rotation.eulerAngles.z);
             //transform.rotation = rotationY;
@@ -215,7 +217,28 @@ public class Spider : MonoBehaviour
 
         }
 
+        
 
 
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+       // Debug.Log(" collision!!!");
+        if (collision.gameObject.transform.root.name.Contains("Spike"))
+        {
+            Debug.Log("spike collision!!!");
+
+            ContactPoint contact = collision.contacts[0];
+            rigidBody.AddForce(contact.normal * 0.5f, ForceMode.Impulse);
+
+        }
+        if (collision.gameObject.tag == "NoClimb")
+        {
+            //Debug.Log("noclimb collision!!!");
+        }
+
+    }
+
+
 }

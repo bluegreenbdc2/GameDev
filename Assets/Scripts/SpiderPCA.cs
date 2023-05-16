@@ -82,7 +82,7 @@ public class SpiderPCA : MonoBehaviour
 
             Vector3 aboveSpiderToLegTarget = transform.TransformPoint(defaultLocalPos[i]) - (transform.position + (transform.up * 1.5f));
             Vector3 LegTargetToBelowSpider = (transform.position - (transform.up * 1.5f)) - transform.TransformPoint(defaultLocalPos[i]);
-            Collider selfCollider = transform.parent.GetComponent<Collider>();
+            Collider selfCollider = transform.root.GetComponent<Collider>();
             selfCollider.enabled = false;
 
             if (Physics.Raycast((transform.position + transform.up), aboveSpiderToLegTarget, out RaycastHit hit, 5f))
@@ -95,7 +95,7 @@ public class SpiderPCA : MonoBehaviour
 
                 if ((defaultLocalPos[i] - newPos).magnitude < maxTargetSurfaceOffset)
                 {
-                    Debug.Log("real!!!! wow");
+                    //Debug.Log("real!!!! wow");
                     localTargetPos[i] = newPos;
                     //}
                 }
@@ -115,7 +115,7 @@ public class SpiderPCA : MonoBehaviour
 
                     if ((defaultLocalPos[i] - newPos).magnitude < maxTargetSurfaceOffset)
                     {
-                        Debug.Log("real!!!! wow");
+                        //Debug.Log("real!!!! wow");
                         localTargetPos[i] = newPos;
                         //}
                     }
