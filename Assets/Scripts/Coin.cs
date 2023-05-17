@@ -20,7 +20,7 @@ public class Coin : MonoBehaviour
 
     void OnDestroy()
     {
-        Instantiate(CoinDeath, transform.position, transform.rotation);
-    }
+        if (this.gameObject.scene.isLoaded) Instantiate(CoinDeath, transform.position, transform.rotation);
+    }   
 
 }
