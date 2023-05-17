@@ -233,6 +233,12 @@ public class Spider : MonoBehaviour
             rigidBody.AddForce(contact.normal * 0.5f, ForceMode.Impulse);
 
         }
+        if (collision.gameObject.transform.name.Contains("Coin"))
+        {
+            Debug.Log("coin collect");
+            Destroy(collision.gameObject);
+
+        }
         if (collision.gameObject.tag == "NoClimb")
         {
             //Debug.Log("noclimb collision!!!");
