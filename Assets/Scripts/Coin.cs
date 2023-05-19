@@ -5,6 +5,7 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public GameObject CoinDeath;
+    public Manager manager;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,16 @@ public class Coin : MonoBehaviour
     void OnDestroy()
     {
         if (this.gameObject.scene.isLoaded) Instantiate(CoinDeath, transform.position, transform.rotation);
-    }   
+    }
+
+    void OnCollisionEnter(Collision obj)
+    {
+        if (obj.gameObject.transform.name.Contains("Player"))
+        {
+            manager.noCoinsCollected += 1;
+
+        }
+    }
+
 
 }

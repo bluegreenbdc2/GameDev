@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spider : MonoBehaviour
+public class EnemySpider : MonoBehaviour
 {
     public GameObject humanPrefab;
 
@@ -27,9 +27,6 @@ public class Spider : MonoBehaviour
     public Transform camer;
     private Animator animator;
     private Camera cam;
-
-    public Manager manager;
-
 
     Cinemachine.CinemachineFreeLook freeLookCam;
 
@@ -100,12 +97,14 @@ public class Spider : MonoBehaviour
         Vector3 cameraRight = cam.transform.right;
         cameraRight.y = 0;
         cameraRight = cameraRight.normalized;
-        
+        Vector3 playerInputDirection = Vector3.zero;
         //Vector3 playerInputDir = new Vector3(playerInput.x, 0f, playerInput.y);
-        Vector3 playerInputDirection = (playerInput.x * cameraRight) + (playerInput.y * cameraForward);
-        
-        Vector3 velocity = (cameraForward * playerInput.y + cameraRight * playerInput.x);
-        
+        if ((GameObject.Find("PlayerSpider").transform.position - transform.position).magnitude < 10f)
+        {
+            playerInputDirection = GameObject.Find("PlayerSpider").transform.position - transform.position;
+        }
+
+        Vector3 velocity = playerInputDirection;
         
         if (playerInputDirection != Vector3.zero)
         {
@@ -211,52 +210,11 @@ public class Spider : MonoBehaviour
             //Debug.DrawRay(Vector3.up * jumpSpeed, green)
         }*/
 
-        if (Input.GetButtonDown("Switch") && isGrounded)
-        {
-            print("Switching");
-            Instantiate(humanPrefab, transform.position, transform.Find("spider/SpiderAnim").gameObject.transform.rotation);
-            
-            Destroy(gameObject);
-
-        }
 
         
 
 
     }
-
-    IEnumerator loseHealth()
-    {
-        hurting = true;
-        manager.playerHealth -= 1;
-
-        Material mat = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material;
-        mat.EnableKeyword("_EMISSION");
-        mat.SetColor("_EmissionColor", Color.red);
-
-        //StartCoroutine(flashRed());
-        yield return new WaitForSeconds(1.5f);
-        mat.DisableKeyword("_EMISSION");
-
-        hurting = false;
-    }
-
-    /*IEnumerator flashRed()
-    {
-        Material mat = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material;
-        mat.EnableKeyword("_EMISSION");
-        mat.SetColor("_EmissionColor", Color.red);
-        yield return new WaitForSeconds(0.5f);
-        mat.DisableKeyword("_EMISSION");
-        yield return new WaitForSeconds(0.5f);
-        mat.EnableKeyword("_EMISSION");
-        yield return new WaitForSeconds(0.5f);
-        mat.DisableKeyword("_EMISSION");
-
-
-    }*/
-
-    bool hurting;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -266,21 +224,18 @@ public class Spider : MonoBehaviour
             Debug.Log("spike collision!!!");
 
             ContactPoint contact = collision.contacts[0];
-
-            if (!hurting) StartCoroutine(loseHealth());
-
             rigidBody.AddForce(contact.normal * 0.5f, ForceMode.Impulse);
 
         }
-        if (collision.gameObject.transform.root.name.Contains("Enemy"))
+        if (collision.gameObject.transform.root.name.Contains("Player"))
         {
-            Debug.Log("enemy collision!!!");
+            Debug.Log("enemyaaa collision!!!");
 
             ContactPoint contact = collision.contacts[0];
 
-            if (!hurting) StartCoroutine(loseHealth());
+            gameObject.transform.GetChild(0).GetChild(1).GetComponent<SpiderPCA>().grabItem(contact.point);
 
-            rigidBody.AddForce(contact.normal * 0.5f, ForceMode.Impulse);
+            //rigidBody.AddForce(contact.normal * 0.5f, ForceMode.Impulse);
 
         }
 
@@ -289,10 +244,9 @@ public class Spider : MonoBehaviour
         {
             Debug.Log("coin collect");
 
-            gameObject.transform.GetChild(0).GetChild(1).GetComponent<SpiderPCA>().grabItem(collision.gameObject.transform.position);
-            manager.noCoinsCollected += 1;
+            //gameObject.transform.GetChild(0).GetChild(1).GetComponent<SpiderPCA>().grabItem(collision.gameObject.transform.position);
 
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
 
         }
         if (collision.gameObject.tag == "NoClimb")
