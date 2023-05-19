@@ -50,7 +50,14 @@ public class SpiderPCA : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetButtonDown("ShootWeb"))
+        {
+            print("Shoot web");
+            //Instantiate(humanPrefab, transform.position, transform.Find("spider/SpiderAnim").gameObject.transform.rotation);
+
+            
+
+        }
     }
     Vector3 lastPos;
     Vector3 surfaceNormal;

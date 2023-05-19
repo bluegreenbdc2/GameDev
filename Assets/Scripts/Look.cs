@@ -6,7 +6,10 @@ public class Look : MonoBehaviour
 {
     private Camera cam;
     public int turnSpeed;
-    
+    bool turning;
+
+    public GameObject webPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,9 +20,52 @@ public class Look : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButtonDown("ShootWeb") && !turning)
+        {
+            
+            StartCoroutine(turnRound(15f, true));
+            //Instantiate(humanPrefab, transform.position, transform.Find("spider/SpiderAnim").gameObject.transform.rotation);
+
+            
         
+        }
+        if (Input.GetButtonUp("ShootWeb") && !turning)
+        {
+            StartCoroutine(turnRound(15f, false));
+            //Instantiate(humanPrefab, transform.position, transform.Find("spider/SpiderAnim").gameObject.transform.rotation);
+        }
     }
-    
+
+    IEnumerator turnRound(float speed, bool shootWeb)
+    {
+        turning = true;
+        Quaternion initialRotation = transform.localRotation;
+        Quaternion toRotate = Quaternion.LookRotation(-transform.forward, transform.up);
+        Quaternion rotationY = Quaternion.Euler(0, toRotate.eulerAngles.y, 0);
+        //moving[leg] = true;
+        for (int i = 1; i <= speed; i++)
+        {
+            
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, 999 * Time.fixedDeltaTime);
+            
+            //transform.rotation = rotationY;
+            transform.localRotation = Quaternion.Lerp(initialRotation, rotationY, i / speed);
+
+
+            //Vector3 legMovement = Vector3.Lerp(legs[leg].position, newPosition, i / speed);
+            //Vector3 legHeight = Mathf.Sin(i / speed * Mathf.PI) * height * transform.up;
+
+            //legs[leg].position = legMovement + legHeight;
+            yield return new WaitForFixedUpdate();
+        }
+        //legsPos[leg] = legs[leg].position;
+        //moving[leg] = false;
+        turning = false;
+        Vector3 webPos = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
+        webPos = webPos + -transform.forward;
+        if (shootWeb) Instantiate(webPrefab, webPos, initialRotation);
+    }
+
     void FixedUpdate()
     {
         Vector2 playerInput;
