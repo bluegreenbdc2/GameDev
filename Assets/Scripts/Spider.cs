@@ -236,6 +236,9 @@ public class Spider : MonoBehaviour
         if (collision.gameObject.transform.name.Contains("Coin"))
         {
             Debug.Log("coin collect");
+
+            gameObject.transform.GetChild(0).GetChild(1).GetComponent<SpiderPCA>().grabItem(collision.gameObject.transform.position);
+
             Destroy(collision.gameObject);
 
         }

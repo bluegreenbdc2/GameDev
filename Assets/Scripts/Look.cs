@@ -43,6 +43,7 @@ public class Look : MonoBehaviour
         Quaternion toRotate = Quaternion.LookRotation(-transform.forward, transform.up);
         Quaternion rotationY = Quaternion.Euler(0, toRotate.eulerAngles.y, 0);
         //moving[leg] = true;
+        float webPosY = transform.position.y;
         for (int i = 1; i <= speed; i++)
         {
             
@@ -50,8 +51,13 @@ public class Look : MonoBehaviour
             
             //transform.rotation = rotationY;
             transform.localRotation = Quaternion.Lerp(initialRotation, rotationY, i / speed);
+            
+            if (shootWeb)
+            {
+                transform.localPosition = new Vector3(transform.localPosition.x, -0.8f * (i / speed), transform.localPosition.z);
+                //GetComponent<SpiderPCA>().grabItem(collision.gameObject.transform.position);
 
-
+            }
             //Vector3 legMovement = Vector3.Lerp(legs[leg].position, newPosition, i / speed);
             //Vector3 legHeight = Mathf.Sin(i / speed * Mathf.PI) * height * transform.up;
 
@@ -61,9 +67,26 @@ public class Look : MonoBehaviour
         //legsPos[leg] = legs[leg].position;
         //moving[leg] = false;
         turning = false;
-        Vector3 webPos = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
+        Vector3 webPos = new Vector3(transform.position.x, webPosY - 0.2f, transform.position.z);
         webPos = webPos + -transform.forward;
-        if (shootWeb) Instantiate(webPrefab, webPos, initialRotation);
+        if (shootWeb)
+        {
+            Instantiate(webPrefab, webPos, initialRotation);
+
+            for (int i = 1; i <= speed; i++)
+            {
+                
+                //transform.localPosition = new Vector3(transform.localPosition.x, -0.8f * (i / speed), transform.localPosition.z);
+                //yield return new WaitForFixedUpdate();
+            }
+            for (int i = 1; i <= speed; i++)
+            {
+
+                transform.localPosition = new Vector3(transform.localPosition.x, -0.8f - (-0.8f* (i / speed)), transform.localPosition.z);
+                yield return new WaitForFixedUpdate();
+            }
+
+        }
     }
 
     void FixedUpdate()

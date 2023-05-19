@@ -59,6 +59,45 @@ public class SpiderPCA : MonoBehaviour
 
         }
     }
+
+
+
+    public void grabItem(Vector3 itemPos)
+    {
+        Debug.Log(itemPos);
+        //if (!moving[7])
+        StartCoroutine(tiltUp(stepSpeed * 2));
+        StartCoroutine(moveLegAndBack(7, itemPos, stepSpeed * 2, legStepHeight));
+        //if (!moving[6]) 
+        StartCoroutine(moveLegAndBack(6, itemPos, stepSpeed * 2, legStepHeight));
+    }
+
+    IEnumerator tiltUp(float speed)
+    {
+        Quaternion initialRotation = transform.localRotation;
+        Quaternion targetRotation = Quaternion.Euler(-26f, initialRotation.eulerAngles.y, initialRotation.eulerAngles.z);
+        //moving[leg] = true;
+        for (int i = 1; i <= speed; i++)
+        {
+
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, 999 * Time.fixedDeltaTime);
+
+            //transform.rotation = rotationY;
+            if (i < speed / 2)
+            {
+                transform.localRotation = Quaternion.Lerp(initialRotation, targetRotation, i / (speed / 2));
+            }
+            else transform.localRotation = Quaternion.Lerp(targetRotation, initialRotation, (i - speed / 2) / (speed / 2));
+
+            //Vector3 legMovement = Vector3.Lerp(legs[leg].position, newPosition, i / speed);
+            //Vector3 legHeight = Mathf.Sin(i / speed * Mathf.PI) * height * transform.up;
+
+            //legs[leg].position = legMovement + legHeight;
+            yield return new WaitForFixedUpdate();
+        }
+
+    }
+
     Vector3 lastPos;
     Vector3 surfaceNormal;
     void FixedUpdate()
@@ -293,7 +332,33 @@ public class SpiderPCA : MonoBehaviour
 
 
     }
-    
+
+    IEnumerator moveLegAndBack(int leg, Vector3 newPosition, float speed, float height)
+    {
+        Debug.Log("gragvbbb");
+        moving[leg] = true;
+        for (int i = 1; i <= speed; i++)
+        {
+            Vector3 legMovement = Vector3.zero;
+            if (i < speed / 2)
+            {
+                legMovement = Vector3.Lerp(legs[leg].position, newPosition, i / (speed / 2));
+            }
+            else if (i >= speed / 2)
+            {
+                legMovement = Vector3.Lerp(newPosition, legs[leg].position, (i - speed /2) / (speed / 2));
+            }
+            Vector3 legHeight = Mathf.Sin(i / speed * Mathf.PI) * height * transform.up;
+
+            legs[leg].position = legMovement; //+ legHeight;
+            yield return new WaitForFixedUpdate();
+        }
+        legsPos[leg] = legs[leg].position;
+        moving[leg] = false;
+    }
+
+
+
     IEnumerator moveLeg(int leg, Vector3 newPosition, float speed, float height)
     {
         moving[leg] = true;
