@@ -4,55 +4,17 @@ using UnityEngine;
 
 public class EnemySpider : MonoBehaviour
 {
-    public GameObject humanPrefab;
-
-    public float rotationSpeed;
-
     private bool isGrounded;
-
-    [SerializeField, Range(0f, 100f)]
-    public float jumpSpeed = 10f;
-    [SerializeField, Range(0f, 100f)]
-    public float gravityScale = 1.5f;
 
     [SerializeField, Range(0f, 100f)]
     float speed = 10f;
 
-    [SerializeField, Range(0f, 100f)]
-    float maxAcceleration = 40f;
-
-    Vector3 velocity;
     Rigidbody rigidBody;
-
-    public Transform camer;
-    private Animator animator;
-    private Camera cam;
-
-    Cinemachine.CinemachineFreeLook freeLookCam;
-
-
-    private Vector3 getGroundNormal() {
-        Vector3 normal = transform.up;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit1, 1f))
-        {
-            Debug.DrawRay(transform.position, transform.forward, Color.green);
-            normal = hit1.normal;
-            
-        }
-        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 1f))
-        {
-            Debug.DrawRay(transform.position, -transform.up, Color.green);
-            normal += hit.normal;
-        }
-        return normal.normalized;
-        //else { return Vector3.up; }
-    }
     
     // Start is called before the first frame update
     void Start()
     {
 
-        animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
 
         PhysicMaterial material = new PhysicMaterial();
@@ -62,39 +24,27 @@ public class EnemySpider : MonoBehaviour
         material.frictionCombine = PhysicMaterialCombine.Minimum;
         material.bounceCombine = PhysicMaterialCombine.Minimum;
 
-        //Collider collider = this.gameObject.transform.GetChild(0).GetComponent<Collider>();
+       
         Collider collider = this.gameObject.transform.GetComponent<Collider>();
-        //collider.material = material;
+       
         gravityDirection = -transform.up;
-        cam = Camera.main;
-        //rigidBody.mass = 0;
         
+        /*
         //has to be below camera assignment (dunno why)
         GameObject real = GameObject.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject;
         real.transform.localRotation = transform.rotation;
+        */
     }
 
-    // Update is called once per frame
     
     Vector3 gravityDirection;
     
     void FixedUpdate()
     {
 
-        Vector2 playerInput;
-
-        playerInput.x = Input.GetAxis("Horizontal");
-        playerInput.y = Input.GetAxis("Vertical");
-
-        Vector3 cameraForward = cam.transform.forward;
-        cameraForward.y = 0;
-        cameraForward = cameraForward.normalized;
-        
-        Vector3 cameraRight = cam.transform.right;
-        cameraRight.y = 0;
-        cameraRight = cameraRight.normalized;
+       
         Vector3 playerInputDirection = Vector3.zero;
-        //Vector3 playerInputDir = new Vector3(playerInput.x, 0f, playerInput.y);
+
         if ((GameObject.Find("PlayerSpider").transform.position - transform.position).magnitude < 10f)
         {
             playerInputDirection = GameObject.Find("PlayerSpider").transform.position - transform.position;
@@ -105,32 +55,19 @@ public class EnemySpider : MonoBehaviour
         if (playerInputDirection != Vector3.zero)
         {
             Quaternion toRotate = Quaternion.LookRotation(velocity, transform.up);
-            //transform.rotation = toRotate;//Quaternion.RotateTowards(transform.rotation, toRotate, rotationSpeed * Time.fixedDeltaTime);
-            //Quaternion rotationY = Quaternion.Euler(transform.rotation.eulerAngles.x, toRotate.eulerAngles.y, transform.rotation.eulerAngles.z);
-            //transform.rotation = rotationY;
+
         }
 
-        //velocity = Quaternion.LookRotation(velocity, transform.up) * velocity;
-        
-       // velocity = Vector3.ProjectOnPlane(velocity, transform.up);
-        //Debug.DrawRay(transform.position, transform.up, Color.blue);
         
         velocity = transform.TransformDirection(velocity);
-        //Debug.DrawRay(transform.position, velocity, Color.magenta);
-        //velocity = Quaternion.Inverse(toRotate) * velocity;
-        //Debug.DrawRay(transform.position, velocity, Color.white);
-        
+
         float mag = velocity.magnitude;
         velocity.Normalize();
         velocity *= speed * Mathf.Clamp01(mag);
         //Debug.DrawRay(transform.position, velocity, Color.green);
         Vector3 displacement = velocity * Time.deltaTime;
         
-        
-        
-        //displacement = transform.TransformDirection(displacement);
-        
-        //Debug.DrawRay(transform.position, velocity, Color.green);
+
         rigidBody.MovePosition(transform.position + displacement);
 
         Vector3 normal = -gravityDirection;
@@ -196,19 +133,7 @@ public class EnemySpider : MonoBehaviour
 
     void Update()
     {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1f);//*
-
-        /*if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            print("jumped");
-            //change to orientation
-            rigidBody.AddForce(transform.up * jumpSpeed, ForceMode.Impulse);
-            //Debug.DrawRay(Vector3.up * jumpSpeed, green)
-        }*/
-
-
-        
-
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1f);
 
     }
 
@@ -229,22 +154,13 @@ public class EnemySpider : MonoBehaviour
 
             ContactPoint contact = collision.contacts[0];
 
+            //attack animations
             gameObject.transform.GetChild(0).GetChild(1).GetComponent<SpiderPCA>().grabItem(contact.point);
 
             //rigidBody.AddForce(contact.normal * 0.5f, ForceMode.Impulse);
 
         }
 
-
-        if (collision.gameObject.transform.name.Contains("Coin"))
-        {
-            Debug.Log("coin collect");
-
-            //gameObject.transform.GetChild(0).GetChild(1).GetComponent<SpiderPCA>().grabItem(collision.gameObject.transform.position);
-
-            //Destroy(collision.gameObject);
-
-        }
         if (collision.gameObject.tag == "NoClimb")
         {
             //Debug.Log("noclimb collision!!!");

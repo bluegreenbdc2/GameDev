@@ -12,14 +12,9 @@ public class Spider : MonoBehaviour
 
     [SerializeField, Range(0f, 100f)]
     public float jumpSpeed = 10f;
-    [SerializeField, Range(0f, 100f)]
-    public float gravityScale = 1.5f;
 
     [SerializeField, Range(0f, 100f)]
     float speed = 10f;
-
-    [SerializeField, Range(0f, 100f)]
-    float maxAcceleration = 40f;
 
     Vector3 velocity;
     Rigidbody rigidBody;
@@ -32,24 +27,6 @@ public class Spider : MonoBehaviour
 
 
     Cinemachine.CinemachineFreeLook freeLookCam;
-
-
-    private Vector3 getGroundNormal() {
-        Vector3 normal = transform.up;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit1, 1f))
-        {
-            Debug.DrawRay(transform.position, transform.forward, Color.green);
-            normal = hit1.normal;
-            
-        }
-        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 1f))
-        {
-            Debug.DrawRay(transform.position, -transform.up, Color.green);
-            normal += hit.normal;
-        }
-        return normal.normalized;
-        //else { return Vector3.up; }
-    }
     
     // Start is called before the first frame update
     void Start()
@@ -75,10 +52,12 @@ public class Spider : MonoBehaviour
         gravityDirection = -transform.up;
         cam = Camera.main;
         //rigidBody.mass = 0;
-        
+       
+        /* leftovers from human transformation
         //has to be below camera assignment (dunno why)
         GameObject real = GameObject.Find("PlayerSpider(Clone)/spider/SpiderAnim").gameObject;
         real.transform.localRotation = transform.rotation;
+        */
     }
 
     // Update is called once per frame
