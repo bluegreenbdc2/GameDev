@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 public class Manager : MonoBehaviour
 {
     public int noCoinsCollected;
@@ -27,5 +29,19 @@ public class Manager : MonoBehaviour
     {
         cointmp.text = "Coins: " + noCoinsCollected + "/" + noCoins;
         healthtmp.text = "Health: " + playerHealth;
+
+        if (noCoinsCollected == noCoins)
+        {
+            SceneManager.LoadScene("YouWin", LoadSceneMode.Single);
+        }
+        if (playerHealth < 1)
+        {
+            SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
+        }
+        if (Input.GetButtonDown("Cancel"))
+        {
+            SceneManager.LoadScene("Bedroom", LoadSceneMode.Single);
+
+        }
     }
 }

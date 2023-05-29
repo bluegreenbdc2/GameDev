@@ -211,14 +211,14 @@ public class Spider : MonoBehaviour
             //Debug.DrawRay(Vector3.up * jumpSpeed, green)
         }*/
 
-        if (Input.GetButtonDown("Switch") && isGrounded)
+        /*if (Input.GetButtonDown("Switch") && isGrounded)
         {
             print("Switching");
             Instantiate(humanPrefab, transform.position, transform.Find("spider/SpiderAnim").gameObject.transform.rotation);
             
             Destroy(gameObject);
 
-        }
+        }*/
 
         
 

@@ -51,10 +51,6 @@ public class EnemySpider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject camera = GameObject.Find("Camera").gameObject;
-        freeLookCam = camera.GetComponent<Cinemachine.CinemachineFreeLook>();
-        freeLookCam.m_LookAt = transform;
-        freeLookCam.m_Follow = transform;
 
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();

@@ -14,4 +14,9 @@ public class Title : MonoBehaviour
     {
         SceneManager.LoadScene("Bedroom", LoadSceneMode.Single);
     }
+
+    public void QuitPressed()
+    {
+        Application.Quit();
+    }
 }
