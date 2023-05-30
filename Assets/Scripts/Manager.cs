@@ -38,10 +38,10 @@ public class Manager : MonoBehaviour
         {
             SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
         }
-        if (Input.GetButtonDown("Cancel"))
+        /*if (Input.GetButtonDown("Cancel"))
         {
             SceneManager.LoadScene("Bedroom", LoadSceneMode.Single);
 
-        }
+        }*/
     }
 }
