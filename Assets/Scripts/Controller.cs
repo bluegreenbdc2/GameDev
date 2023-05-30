@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//SCRAPPED HUMAN CONTROLLER
+
 public class Controller : MonoBehaviour
 {
     public GameObject spiderPrefab;

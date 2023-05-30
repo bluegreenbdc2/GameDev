@@ -89,9 +89,7 @@ public class Spider : MonoBehaviour
         if (playerInputDirection != Vector3.zero)
         {
             Quaternion toRotate = Quaternion.LookRotation(velocity, transform.up);
-            //transform.rotation = toRotate;//Quaternion.RotateTowards(transform.rotation, toRotate, rotationSpeed * Time.fixedDeltaTime);
-            //Quaternion rotationY = Quaternion.Euler(transform.rotation.eulerAngles.x, toRotate.eulerAngles.y, transform.rotation.eulerAngles.z);
-            //transform.rotation = rotationY;
+
         }
 
         //velocity = Quaternion.LookRotation(velocity, transform.up) * velocity;
